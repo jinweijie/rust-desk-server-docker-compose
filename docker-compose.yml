@@ -1,0 +1,39 @@
+services:
+  rust_desk_hbbs:
+    container_name: rust_desk_hbbs
+    image: rustdesk/rustdesk-server
+    restart: always
+    ports:
+      - "21114:21114"
+      - "21115:21115"
+      - "21116:21116"
+      - "21116:21116/udp"
+      - "21118:21118"
+    command: ["hbbs", "-r", "${HOST}", "-m", "demo"]
+    volumes:
+      - rust_desk_hbbs_data:/root
+    networks:
+      - rust_desk_net
+  
+  rust_desk_hbbr:
+    container_name: rust_desk_hbbr
+    image: rustdesk/rustdesk-server
+    restart: always
+    ports:
+      - "21117:21117"
+      - "21119:21119"
+    command: ["hbbr", "-m", "demo"]
+    volumes:
+      - rust_desk_hbbr_data:/root
+    networks:
+      - rust_desk_net
+
+volumes:
+  rust_desk_hbbs_data:
+    name: rust_desk_hbbs_data
+  rust_desk_hbbr_data:
+    name: rust_desk_hbbr_data
+
+networks:
+  rust_desk_net:
+    driver: bridge
